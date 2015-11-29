@@ -29,7 +29,39 @@
         <script src="../build/three.min.js"></script>
         <script src="js/controls/OrbitControls.js"></script>
         <script src="js/loaders/ColladaLoader.js"></script>
+    <!--  <script src="audio.js"></script> ****************************-->
+    
+        <audio id="myAudio" src="sound/scale.m4a"></audio>
+        <button type="button" data-start="2" data-stop="3"><img src="images/C4.png"></button> <!-- 0 to 1 -->
+        <button type="button" data-start="4" data-stop="5"><img src="images/D4.png"></button>
+        <button type="button" data-start="6" data-stop="7"><img src="images/E4.png"></button>
+        <button type="button" data-start="7" data-stop="8"><img src="images/F4.png"></button>
+        <button type="button" data-start="9" data-stop="10"><img src="images/G4.png"></button>
         
+        <!-- <input id='image' type="image" src="g.png" data-start="0" data-stop="1"> -->
+        
+        <script>
+           
+            var myAudio = document.getElementById('myAudio');
+            var buttons = document.getElementsByTagName('button'); //ElementsByTagName
+            var stopTime = 0;
+            
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].onclick = function() {
+                    myAudio.currentTime = this.getAttribute("data-start");
+                    stopTime = this.getAttribute("data-stop");
+                    myAudio.play();
+                };
+            }
+        
+        myAudio.addEventListener('timeupdate', function() {
+                                 if (this.currentTime > stopTime) {
+                                 this.pause();
+                                 }
+                                 }, false);
+                                 
+            </script>
+        <!-- **********************************  -->
         
         <script type="x-shader/x-vertex" id="vertexShader">
             
@@ -68,8 +100,12 @@
             // Set up the scene, camera, and renderer as global variables.
             var scene, camera, renderer;
             
+        
             init();
             animate();
+            
+            //*******************************************************
+           
             
             // Sets up the scene.
             function init() {
@@ -85,9 +121,12 @@
                 document.body.appendChild(renderer.domElement);
                 
                 // Create a camera, zoom it out from the model a bit, and add it to the scene.
-                camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 20000);
-                camera.position.set(-350,350,800);
+                camera = new THREE.PerspectiveCamera(30, WIDTH / HEIGHT, 0.5, 20000);
+                camera.position.set(100,550,1000); //-350, 350, 800
                 scene.add(camera);
+                
+                //*******
+                //loadSoundObj({ src : 'credo.mp3' });
                 
                 // Create an event listener that resizes the renderer with the browser window.
                 window.addEventListener('resize', function() {
@@ -161,7 +200,7 @@
                                                     var skin = collada.skins[ 0 ];
                                                     
                                                     
-                                                    dae.position.set(0,9,0);//x,z,y- if you think in blender dimensions ;)
+                                                    dae.position.set(5,5,0);//x,z,y- if you think in blender dimensions ;)
                                                     dae.scale.set(1.5,1.5,1.5);
                                                     
                                                     scene.add(dae);
@@ -187,6 +226,16 @@
                                                     controls = new THREE.OrbitControls(camera, renderer.domElement);
                                                     
             }
+        
+        
+        ////  ADDED HERE **************///
+       
+        
+        
+         
+
+//************************************************************************
+        
         
         
         // Renders the scene and updates the render as needed.
