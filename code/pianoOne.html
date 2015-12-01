@@ -125,7 +125,7 @@
                 
                 // Create a camera, zoom it out from the model a bit, and add it to the scene.
                 camera = new THREE.PerspectiveCamera(30, WIDTH / HEIGHT, 0.5, 20000);
-                camera.position.set(100,550,1000); //-350, 350, 800
+                camera.position.set(100,550,1500); //-350, 350, 800
                 scene.add(camera);
                 
                 //*******
@@ -151,14 +151,6 @@
                                             exponent:	 { type: "f", value: 0.7 }//unschärfe
                                         }
                                         
-                                        
-                                        //skydome
-                                        
-                                        var skyGeo = new THREE.SphereGeometry( 2000, 32, 15 );//Kugel
-                                        var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
-                                        
-                                        var sky = new THREE.Mesh( skyGeo, skyMat );
-                                        scene.add( sky );
                                         
                                         
                                         // Create a light, set its position, and add it to the scene.
@@ -203,16 +195,11 @@
                                                     var skin = collada.skins[ 0 ];
                                                     
                                                     
-                                                    dae.position.set(5,5,0);//x,z,y- if you think in blender dimensions ;)
+                                                    dae.position.set(-1000,0,0);//x,z,y- if you think in blender dimensions ;)
                                                     dae.scale.set(1.5,1.5,1.5);
                                                     
                                                     scene.add(dae);
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
+                                      
                                                     var axes = new THREE.AxisHelper(50);
                                                     axes.position = dae.position;
                                                     scene.add(axes);
