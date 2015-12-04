@@ -191,10 +191,11 @@ function mix(a,b,x)
 
 function update_key( obj, delta )
 {
+    baseX = obj.rotation.x;
     if (obj.keyState == keyState.note_on)
     {
         obj.rotation.x = mix(-Math.PI/4.0, -controls.key_max_rot, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
-        if (obj.rotation.x >= -controls.key_max_rot)
+        if ((obj.rotation.x+baseX) >= -controls.key_max_rot)
         {
             obj.keyState = keyState.pressed;
             obj.clock.elapsedTime = 0;
@@ -204,7 +205,7 @@ function update_key( obj, delta )
     else if (obj.keyState == keyState.note_off)
     {
         obj.rotation.x = mix(-controls.key_max_rot, -Math.PI/4.0, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
-        if (obj.rotation.x <= -Math.PI/4.0)
+        if ((obj.rotation.x+baseX) <= -Math.PI/4.0)
         {
             obj.keyState = keyState.unpressed;
             obj.clock.elapsedTime = 0;
