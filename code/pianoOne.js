@@ -193,8 +193,8 @@ function update_key( obj, delta )
 {
     if (obj.keyState == keyState.note_on)
     {
-        obj.rotation.x = mix(-Math.PI/4.0, -controls.key_max_rotation, smoothstep(0.0, 1.0, controls.key_attack_time*obj.clock.getElapsedTime()));
-        if (obj.rotation.x >= -controls.key_max_rotation)
+        obj.rotation.x = mix(-Math.PI/4.0, -controls.key_max_rot, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
+        if (obj.rotation.x >= -controls.key_max_rot)
         {
             obj.keyState = keyState.pressed;
             obj.clock.elapsedTime = 0;
@@ -203,7 +203,7 @@ function update_key( obj, delta )
     }
     else if (obj.keyState == keyState.note_off)
     {
-        obj.rotation.x = mix(-controls.key_max_rotation, -Math.PI/4.0, smoothstep(0.0, 1.0, controls.key_attack_time*obj.clock.getElapsedTime()));
+        obj.rotation.x = mix(-controls.key_max_rot, -Math.PI/4.0, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
         if (obj.rotation.x <= -Math.PI/4.0)
         {
             obj.keyState = keyState.unpressed;
