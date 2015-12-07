@@ -132,8 +132,8 @@ scene.add(dae);
 
 // Add OrbitControls so that we can pan around with the mouse.
 controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.key_attack = 9.0;
-    controls.key_max_rot = 0.72;
+    controls.key_attack = 0.3; //9
+    controls.key_max_rot = 1.55; //1.5 best
     controls.octave = 2;
 
 }
