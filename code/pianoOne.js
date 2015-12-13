@@ -4,6 +4,7 @@ var keyboard_keys = [];
 var keys_down = [];
 var clock = new THREE.Clock();
 var int;
+var myAudio = document.getElementById('myAudio');
 var sounds = {
     90 :  'c', // C 0
     83 :  'c', // C#0
@@ -39,7 +40,7 @@ var sounds = {
     80 :  'e', // E 2
     219 :  'f', // F 2
     187 :  'f', // F#2
-    221 :  'g', // G 2
+    221 :  'g' // G 2
 };
 
 init();
@@ -254,7 +255,6 @@ function update( delta )
 
 function keyCode_to_note( keyCode)
 {
-    console.log("Note: ", keyCode);
     var note = -1;
     //-----------------------------------
     if(   keyCode==90 )  note= 0; // C 0
@@ -311,40 +311,40 @@ window.onkeydown = function(ev)
             var note = parseInt(note.substr(1))+21; // the note
             //checks the returned note and gives a sound
             var soundId = sounds[ev.keyCode];
-            /*
+            
             switch(soundId) {
                 case 'a':
                     playa();
                     console.log("a");
                     break;
                 case 'b':
-                    playa();
+                    playb();
                     console.log("b");
                     break;
                 case 'c':
-                    playa();
+                    playc();
                                         console.log("c");
                     break;
                 case 'd':
-                    playa();
+                    playd();
                                         console.log("d");
                     break;
                 case 'e':
-                    playa();
+                    playe();
                                         console.log("e");
                     break;
                 case 'f':
-                    playa();
+                    playf();
                                         console.log("f");
                     break;
                 case 'g':
-                    playa();
+                    playg();
                                         console.log("g");
                     break;
                 default:
                     console.log("Invalid case");
             }
-             */
+            
         }
     }
 }
@@ -381,7 +381,7 @@ controls.update();
 }
 
 //******************Sound playing functios****************************//
-/*
+
 
 function playc(){
     myAudio.currentTime = 0;
@@ -396,6 +396,7 @@ function playc(){
 
 function playd(){
     clearInterval(int);
+    
     myAudio.currentTime = 2;
     myAudio.play();
     
@@ -449,6 +450,7 @@ function playa(){
     myAudio.play();
     int = setInterval(function() {
                       if (myAudio.currentTime > 11) {
+                      console.log(" Time: ");
                       myAudio.pause();
                       clearInterval(int);
                       }
@@ -460,4 +462,4 @@ function playb(){
     myAudio.currentTime = 12;
     myAudio.play();
 }
- */
+
