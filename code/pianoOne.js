@@ -3,6 +3,44 @@ var scene, camera, renderer;
 var keyboard_keys = [];
 var keys_down = [];
 var clock = new THREE.Clock();
+var int;
+var sounds = {
+    90 :  'c', // C 0
+    83 :  'c', // C#0
+    88 :  'd', // D 0
+    68 :  'd', // D#0
+    67 :  'e', // E 0
+    86 :  'f', // F 0
+    71 :  'f', // F#0
+    66 :  'g', // G 0
+    72 :  'g', // G#0
+    78 :  'a', // A 0
+    74 :  'a', // A#0
+    77 :  'b', // B 0
+    188 : 'c', // C 0
+    //-----------------------------------
+    81 :  'c', // C 1
+    50 :  'c', // C#1
+    87 :  'd', // D 1
+    51 :  'd', // D#1
+    69 :  'e', // E 1
+    82 :  'f', // F 1
+    53 :  'f', // F#1
+    84 :  'g', // G 1
+    54 :  'g', // G#1
+    89 :  'a', // A 1
+    55 :  'a', // A#1
+    85 :  'b', // B 1
+    //-----------------------------------
+    73 :  'c', // C 2
+    57 :  'c', // C#2
+    79 :  'd', // D 2
+    48 :  'd', // D#2
+    80 :  'e', // E 2
+    219 :  'f', // F 2
+    187 :  'f', // F#2
+    221 :  'g', // G 2
+};
 
 init();
 animate();
@@ -71,12 +109,6 @@ window.addEventListener('resize', function() {
 
 var vertexShader = document.getElementById( 'vertexShader' ).textContent;
 var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
-var uniforms = {
-    topColor: 	 { type: "c", value: new THREE.Color(0x000000) },
-    bottomColor: { type: "c", value: new THREE.Color( 0x262626 ) },
-    offset:		 { type: "f", value: 100 },
-    exponent:	 { type: "f", value: 0.7 }//unschärfe
-}
 
 
 
@@ -195,28 +227,25 @@ function update_key( obj, delta )
     if (obj.keyState == keyState.note_on)
     {
         obj.rotation.x = mix(-Math.PI/4.0, -controls.key_max_rot, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
-        if ((obj.rotation.x+baseX) >= -controls.key_max_rot)
+        if ((obj.rotation.x) >= -controls.key_max_rot)
         {
             obj.keyState = keyState.pressed;
             obj.clock.elapsedTime = 0;
         }
-        //obj.material.color = noteOnColor;
     }
     else if (obj.keyState == keyState.note_off)
     {
         obj.rotation.x = mix(-controls.key_max_rot, -Math.PI/4.0, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
-        if ((obj.rotation.x+baseX) <= -Math.PI/4.0)
+        if ((obj.rotation.x) <= -Math.PI/4.0)
         {
             obj.keyState = keyState.unpressed;
             obj.clock.elapsedTime = 0;
         }
-        //obj.material.color = obj.material.note_off;
     }
 }
 
 function update( delta )
 {
-    //cameraControls.update(delta);
     for(i in keyboard_keys)
     {
         update_key(keyboard_keys[i], delta);
@@ -265,6 +294,7 @@ function keyCode_to_note( keyCode)
     if(   keyCode==221 ) note=31; // G 2
     //-----------------------------------
     if( note == -1 ) return -1;
+    
     return ("_" + (note + controls.octave*12));
 }
 
@@ -279,6 +309,42 @@ window.onkeydown = function(ev)
             keys_down[ev.keyCode] = true;
             var delay = 0; // play one note every quarter second
             var note = parseInt(note.substr(1))+21; // the note
+            //checks the returned note and gives a sound
+            var soundId = sounds[ev.keyCode];
+            /*
+            switch(soundId) {
+                case 'a':
+                    playa();
+                    console.log("a");
+                    break;
+                case 'b':
+                    playa();
+                    console.log("b");
+                    break;
+                case 'c':
+                    playa();
+                                        console.log("c");
+                    break;
+                case 'd':
+                    playa();
+                                        console.log("d");
+                    break;
+                case 'e':
+                    playa();
+                                        console.log("e");
+                    break;
+                case 'f':
+                    playa();
+                                        console.log("f");
+                    break;
+                case 'g':
+                    playa();
+                                        console.log("g");
+                    break;
+                default:
+                    console.log("Invalid case");
+            }
+             */
         }
     }
 }
@@ -314,3 +380,84 @@ controls.update();
 
 }
 
+//******************Sound playing functios****************************//
+/*
+
+function playc(){
+    myAudio.currentTime = 0;
+    myAudio.play();
+    int = setInterval(function() {
+                      if (myAudio.currentTime > 1) {
+                      myAudio.pause();
+                      clearInterval(int);
+                      }
+                      }, 10);
+}
+
+function playd(){
+    clearInterval(int);
+    myAudio.currentTime = 2;
+    myAudio.play();
+    
+    int = setInterval(function() {
+                      if (myAudio.currentTime > 3) {
+                      myAudio.pause();
+                      clearInterval(int);
+                      }
+                      }, 10);
+}
+
+function playe(){
+    clearInterval(int);
+    myAudio.currentTime = 4;
+    myAudio.play();
+    int = setInterval(function() {
+                      if (myAudio.currentTime > 5) {
+                      myAudio.pause();
+                      clearInterval(int);
+                      }
+                      }, 10);
+}
+
+function playf(){
+    clearInterval(int);
+    myAudio.currentTime = 6;
+    myAudio.play();
+    int = setInterval(function() {
+                      if (myAudio.currentTime > 7) {
+                      myAudio.pause();
+                      clearInterval(int);
+                      }
+                      }, 10);
+}
+
+function playg(){
+    clearInterval(int);
+    myAudio.currentTime = 8;
+    myAudio.play();
+    int = setInterval(function() {
+                      if (myAudio.currentTime > 9) {
+                      myAudio.pause();
+                      clearInterval(int);
+                      }
+                      }, 10);
+}
+
+function playa(){
+    clearInterval(int);
+    myAudio.currentTime = 10;
+    myAudio.play();
+    int = setInterval(function() {
+                      if (myAudio.currentTime > 11) {
+                      myAudio.pause();
+                      clearInterval(int);
+                      }
+                      }, 10);
+}
+
+function playb(){
+    clearInterval(int);
+    myAudio.currentTime = 12;
+    myAudio.play();
+}
+ */
