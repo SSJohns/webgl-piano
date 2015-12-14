@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Test von Web GL</title>
+        <title>WebGL Piano</title>
         <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
                     <style>
@@ -43,7 +43,43 @@
     <!--  <script src="audio.js"></script> ****************************-->
     
         <audio id="myAudio" src="sound/scale.m4a"></audio>
-        <button type="button" data-start="0" data-stop="1"><img src="images/C4.png"></button> <!-- 0 to 1 -->
+        
+        <audio id="C3" src="sound/C3.mp3"></audio>
+        <audio id="Db3" src="sound/Db3.mp3"></audio>
+        <audio id="D3" src="sound/D3.mp3"></audio>
+        <audio id="Eb3" src="sound/Eb3.mp3"></audio>
+        <audio id="E3" src="sound/E3.mp3"></audio>
+        <audio id="F3" src="sound/F3.mp3"></audio>
+        <audio id="Gb3" src="sound/Gb3.mp3"></audio>
+        <audio id="G3" src="sound/G3.mp3"></audio>
+        <audio id="Ab3" src="sound/Ab3.mp3"></audio>
+        <audio id="A3" src="sound/A3.mp3"></audio>
+        <audio id="Bb3" src="sound/Bb3.mp3"></audio>
+        <audio id="B3" src="sound/B3.mp3"></audio>
+        <audio id="C4" src="sound/C4.mp3"></audio>
+        <audio id="Db4" src="sound/Db4.mp3"></audio>
+        <audio id="D4" src="sound/D4.mp3"></audio>
+        <audio id="Eb4" src="sound/Eb4.mp3"></audio>
+        <audio id="E4" src="sound/E4.mp3"></audio>
+        <audio id="F4" src="sound/F4.mp3"></audio>
+        <audio id="Gb4" src="sound/Gb4.mp3"></audio>
+        <audio id="G4" src="sound/G4.mp3"></audio>
+        <audio id="Ab4" src="sound/Ab4.mp3"></audio>
+        <audio id="A4" src="sound/A4.mp3"></audio>
+        <audio id="Bb4" src="sound/Bb4.mp3"></audio>
+        <audio id="B4" src="sound/B4.mp3"></audio>
+        <audio id="C5" src="sound/C5.mp3"></audio>
+        <audio id="Db5" src="sound/Db5.mp3"></audio>
+        <audio id="D5" src="sound/D5.mp3"></audio>
+        <audio id="Eb5" src="sound/Eb5.mp3"></audio>
+        <audio id="E5" src="sound/E5.mp3"></audio>
+        <audio id="F5" src="sound/F5.mp3"></audio>
+        <audio id="Gb5" src="sound/Gb5.mp3"></audio>
+        <audio id="G5" src="sound/G5.mp3"></audio>
+
+
+<!-- Button images -->
+        <img src = "" id = "img"/> <button type="button" id="c" data-start="0" data-stop="1" clicked="false" onclick="pic1()"><img src="images/C4.png"></button> <!-- 0 to 1 -->
         <button type="button" data-start="2" data-stop="3"><img src="images/D4.png"></button>
         <button type="button" data-start="4" data-stop="5"><img src="images/E4.png"></button>
         <button type="button" data-start="6" data-stop="7"><img src="images/F4.png"></button>
@@ -55,18 +91,24 @@
         <!-- <input id='image' type="image" src="g.png" data-start="0" data-stop="1"> -->
         
         <script>
-           
+        
             var myAudio = document.getElementById('myAudio');
             var buttons = document.getElementsByTagName('button'); //ElementsByTagName
             var stopTime = 0;
+            
+            //function makeKeyPressed
             
             for (var i = 0; i < buttons.length; i++) {
                 buttons[i].onclick = function() {
                     myAudio.currentTime = this.getAttribute("data-start");
                     stopTime = this.getAttribute("data-stop");
                     myAudio.play();
-                };
+                    
+          
+                }; //top by function
             }
+        
+        
         
         myAudio.addEventListener('timeupdate', function() {
                                  if (this.currentTime > stopTime) {
@@ -74,7 +116,19 @@
                                  }
                                  }, false);
                                  
-            </script>
+                                 
+                                 
+                ///
+        function pic1()
+                {
+                    document.getElementById("img").src = "images/grassi.jpg";
+                }
+        
+        </script>
+        
+    
+            
+          
         <!-- **********************************  -->
         
         <script type="x-shader/x-vertex" id="vertexShader">

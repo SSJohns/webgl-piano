@@ -3,45 +3,6 @@ var scene, camera, renderer;
 var keyboard_keys = [];
 var keys_down = [];
 var clock = new THREE.Clock();
-var int;
-var myAudio = document.getElementById('myAudio');
-var sounds = {
-    90 :  'c', // C 0
-    83 :  'c', // C#0
-    88 :  'd', // D 0
-    68 :  'd', // D#0
-    67 :  'e', // E 0
-    86 :  'f', // F 0
-    71 :  'f', // F#0
-    66 :  'g', // G 0
-    72 :  'g', // G#0
-    78 :  'a', // A 0
-    74 :  'a', // A#0
-    77 :  'b', // B 0
-    188 : 'c', // C 0
-    //-----------------------------------
-    81 :  'c', // C 1
-    50 :  'c', // C#1
-    87 :  'd', // D 1
-    51 :  'd', // D#1
-    69 :  'e', // E 1
-    82 :  'f', // F 1
-    53 :  'f', // F#1
-    84 :  'g', // G 1
-    54 :  'g', // G#1
-    89 :  'a', // A 1
-    55 :  'a', // A#1
-    85 :  'b', // B 1
-    //-----------------------------------
-    73 :  'c', // C 2
-    57 :  'c', // C#2
-    79 :  'd', // D 2
-    48 :  'd', // D#2
-    80 :  'e', // E 2
-    219 :  'f', // F 2
-    187 :  'f', // F#2
-    221 :  'g' // G 2
-};
 
 init();
 animate();
@@ -110,6 +71,12 @@ window.addEventListener('resize', function() {
 
 var vertexShader = document.getElementById( 'vertexShader' ).textContent;
 var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+var uniforms = {
+    topColor: 	 { type: "c", value: new THREE.Color(0x000000) },
+    bottomColor: { type: "c", value: new THREE.Color( 0x262626 ) },
+    offset:		 { type: "f", value: 100 },
+    exponent:	 { type: "f", value: 0.7 }//unschärfe
+}
 
 
 
@@ -224,77 +191,117 @@ function mix(a,b,x)
 
 function update_key( obj, delta )
 {
-    baseX = obj.rotation.x;
     if (obj.keyState == keyState.note_on)
     {
         obj.rotation.x = mix(-Math.PI/4.0, -controls.key_max_rot, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
-        if ((obj.rotation.x) >= -controls.key_max_rot)
+        if (obj.rotation.x >= -controls.key_max_rot)
         {
             obj.keyState = keyState.pressed;
             obj.clock.elapsedTime = 0;
         }
+        //obj.material.color = noteOnColor;
     }
     else if (obj.keyState == keyState.note_off)
     {
         obj.rotation.x = mix(-controls.key_max_rot, -Math.PI/4.0, smoothstep(0.0, 1.0, controls.key_attack*obj.clock.getElapsedTime()));
-        if ((obj.rotation.x) <= -Math.PI/4.0)
+        if (obj.rotation.x <= -Math.PI/4.0)
         {
             obj.keyState = keyState.unpressed;
             obj.clock.elapsedTime = 0;
         }
+        //obj.material.color = obj.material.note_off;
     }
 }
 
 function update( delta )
 {
+    //cameraControls.update(delta);
     for(i in keyboard_keys)
     {
         update_key(keyboard_keys[i], delta);
     }
 }
 
+var button1 = document.getElementById('c');
+
 function keyCode_to_note( keyCode)
 {
+    console.log("Note: ", keyCode);
     var note = -1;
+    var p_c3 = document.getElementById('C3');
+    var p_db3 = document.getElementById('Db3');
+    var p_d3 = document.getElementById('D3');
+    var p_eb3 = document.getElementById('Eb3');
+    var p_e3 = document.getElementById('E3');
+    var p_f3 = document.getElementById('F3');
+    var p_gb3 = document.getElementById('Gb3');
+    var p_g3 = document.getElementById('G3');
+    var p_ab3 = document.getElementById('Ab3');
+    var p_a3 = document.getElementById('A3');
+    var p_bb3 = document.getElementById('Bb3');
+    var p_b3 = document.getElementById('B3');
+    var p_c4 = document.getElementById('C4');
+    var p_db4 = document.getElementById('Db4');
+    var p_d4 = document.getElementById('D4');
+    var p_eb4 = document.getElementById('Eb4');
+    var p_e4 = document.getElementById('E4');
+    var p_f4 = document.getElementById('F4');
+    var p_gb4 = document.getElementById('Gb4');
+    var p_g4 = document.getElementById('G4');
+    var p_ab4 = document.getElementById('Ab4');
+    var p_a4 = document.getElementById('A4');
+    var p_bb4 = document.getElementById('Bb4');
+    var p_b4 = document.getElementById('B4');
+    var p_c5 = document.getElementById('C5');
+    var p_db5 = document.getElementById('Db5');
+    var p_d5 = document.getElementById('D5');
+    var p_eb5 = document.getElementById('Eb5');
+    var p_e5 = document.getElementById('E5');
+    var p_f5 = document.getElementById('F5');
+    var p_gb5 = document.getElementById('Gb5');
+    var p_g5 = document.getElementById('G5');
+    
+    ///////////////
+
+    
     //-----------------------------------
-    if(   keyCode==90 )  note= 0; // C 0
-    if(   keyCode==83 )  note= 1; // C#0
-    if(   keyCode==88 )  note= 2; // D 0
-    if(   keyCode==68 )  note= 3; // D#0
-    if(   keyCode==67 )  note= 4; // E 0
-    if(   keyCode==86 )  note= 5; // F 0
-    if(   keyCode==71 )  note= 6; // F#0
-    if(   keyCode==66 )  note= 7; // G 0
-    if(   keyCode==72 )  note= 8; // G#0
-    if(   keyCode==78 )  note= 9; // A 0
-    if(   keyCode==74 )  note=10; // A#0
-    if(   keyCode==77 )  note=11; // B 0
-    if(   keyCode==188 ) note=12; // C 0
+    if(   keyCode==90 )  { p_c3.play(); note=0; } // C 0
+    if(   keyCode==83 )  { p_db3.play();note= 1; }// C#0
+    if(   keyCode==88 )  { p_d3.play(); note= 2; }// D 0
+    if(   keyCode==68 )  { p_eb3.play(); note= 3; }// D#0
+    if(   keyCode==67 )  { p_e3.play(); note= 4; }// E 0
+    if(   keyCode==86 )  { p_f3.play(); note= 5; } // F 0
+    if(   keyCode==71 )  { p_gb3.play(); note= 6; } // F#0
+    if(   keyCode==66 )  { p_g3.play(); note= 7; }// G 0
+    if(   keyCode==72 )  { p_ab3.play(); note= 8; }// G#0
+    if(   keyCode==78 )  { p_a3.play(); note= 9; }// A 0
+    if(   keyCode==74 )  { p_bb3.play(); note=10; }// A#0
+    if(   keyCode==77 )  { p_b3.play(); note=11; }// B 0
+    if(   keyCode==188)  { p_c4.play(); note=12; }// C 0 // || button1 is pressed
     //-----------------------------------
-    if(   keyCode==81 )  note=12; // C 1
-    if(   keyCode==50 )  note=13; // C#1
-    if(   keyCode==87 )  note=14; // D 1
-    if(   keyCode==51 )  note=15; // D#1
-    if(   keyCode==69 )  note=16; // E 1
-    if(   keyCode==82 )  note=17; // F 1
-    if(   keyCode==53 )  note=18; // F#1
-    if(   keyCode==84 )  note=19; // G 1
-    if(   keyCode==54 )  note=20; // G#1
-    if(   keyCode==89 )  note=21; // A 1
-    if(   keyCode==55 )  note=22; // A#1
-    if(   keyCode==85 )  note=23; // B 1
+    if(   keyCode==81 )  { p_c4.play(); note=12; }// C 1
+    if(   keyCode==50 )  { p_db4.play(); note=13; }// C#1
+    if(   keyCode==87 )  { p_d4.play();  note=14; }// D 1
+    if(   keyCode==51 )  { p_eb4.play(); note=15; }// D#1
+    if(   keyCode==69 )  { p_e4.play(); note=16; }// E 1
+    if(   keyCode==82 )  { p_f4.play(); note=17; }// F 1
+    if(   keyCode==53 )  { p_gb4.play(); note=18; } // F#1
+    if(   keyCode==84 )  { p_g4.play(); note=19; } // G 1 //note=19;
+    if(   keyCode==54 )  { p_ab4.play();note=20; }// G#1
+    if(   keyCode==89 )  { p_a4.play(); note=21; } // A 1
+    if(   keyCode==55 )  { p_bb4.play();note=22; }// A#1
+    if(   keyCode==85 )  { p_b4.play(); note=23; } // B 1
     //-----------------------------------
-    if(   keyCode==73 )  note=24; // C 2
-    if(   keyCode==57 )  note=25; // C#2
-    if(   keyCode==79 )  note=26; // D 2
-    if(   keyCode==48 )  note=27; // D#2
-    if(   keyCode==80 )  note=28; // E 2
-    if(   keyCode==219 ) note=29; // F 2
-    if(   keyCode==187 ) note=30; // F#2
-    if(   keyCode==221 ) note=31; // G 2
+    if(   keyCode==73 )  { p_c5.play(); note=24; } // C 2
+    if(   keyCode==57 )  { p_db5.play(); note=25; }// C#2
+    if(   keyCode==79 )  { p_d5.play(); note=26; }// D 2
+    if(   keyCode==48 )  { p_eb5.play();note=27; }// D#2
+    if(   keyCode==80 )  { p_e5.play(); note=28; }// E 2
+    if(   keyCode==219 ) { p_f5.play(); note=29; }// F 2
+    if(   keyCode==187 ) { p_gb5.play(); note=30; }// F#2
+    if(   keyCode==221 ) { p_g5.play(); note=31; }// G 2
     //-----------------------------------
     if( note == -1 ) return -1;
-    
     return ("_" + (note + controls.octave*12));
 }
 
@@ -309,42 +316,6 @@ window.onkeydown = function(ev)
             keys_down[ev.keyCode] = true;
             var delay = 0; // play one note every quarter second
             var note = parseInt(note.substr(1))+21; // the note
-            //checks the returned note and gives a sound
-            var soundId = sounds[ev.keyCode];
-            
-            switch(soundId) {
-                case 'a':
-                    playa();
-                    console.log("a");
-                    break;
-                case 'b':
-                    playb();
-                    console.log("b");
-                    break;
-                case 'c':
-                    playc();
-                                        console.log("c");
-                    break;
-                case 'd':
-                    playd();
-                                        console.log("d");
-                    break;
-                case 'e':
-                    playe();
-                                        console.log("e");
-                    break;
-                case 'f':
-                    playf();
-                                        console.log("f");
-                    break;
-                case 'g':
-                    playg();
-                                        console.log("g");
-                    break;
-                default:
-                    console.log("Invalid case");
-            }
-            
         }
     }
 }
@@ -378,88 +349,5 @@ requestAnimationFrame(animate);
 renderer.render(scene, camera);
 controls.update();
 
-}
-
-//******************Sound playing functios****************************//
-
-
-function playc(){
-    myAudio.currentTime = 0;
-    myAudio.play();
-    int = setInterval(function() {
-                      if (myAudio.currentTime > 1) {
-                      myAudio.pause();
-                      clearInterval(int);
-                      }
-                      }, 10);
-}
-
-function playd(){
-    clearInterval(int);
-    
-    myAudio.currentTime = 2;
-    myAudio.play();
-    
-    int = setInterval(function() {
-                      if (myAudio.currentTime > 3) {
-                      myAudio.pause();
-                      clearInterval(int);
-                      }
-                      }, 10);
-}
-
-function playe(){
-    clearInterval(int);
-    myAudio.currentTime = 4;
-    myAudio.play();
-    int = setInterval(function() {
-                      if (myAudio.currentTime > 5) {
-                      myAudio.pause();
-                      clearInterval(int);
-                      }
-                      }, 10);
-}
-
-function playf(){
-    clearInterval(int);
-    myAudio.currentTime = 6;
-    myAudio.play();
-    int = setInterval(function() {
-                      if (myAudio.currentTime > 7) {
-                      myAudio.pause();
-                      clearInterval(int);
-                      }
-                      }, 10);
-}
-
-function playg(){
-    clearInterval(int);
-    myAudio.currentTime = 8;
-    myAudio.play();
-    int = setInterval(function() {
-                      if (myAudio.currentTime > 9) {
-                      myAudio.pause();
-                      clearInterval(int);
-                      }
-                      }, 10);
-}
-
-function playa(){
-    clearInterval(int);
-    myAudio.currentTime = 10;
-    myAudio.play();
-    int = setInterval(function() {
-                      if (myAudio.currentTime > 11) {
-                      console.log(" Time: ");
-                      myAudio.pause();
-                      clearInterval(int);
-                      }
-                      }, 10);
-}
-
-function playb(){
-    clearInterval(int);
-    myAudio.currentTime = 12;
-    myAudio.play();
 }
 
