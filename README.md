@@ -1,3 +1,5 @@
+
+##3D WebGL Interactive Piano
 Camilla Tassi, Shaquille Johnson 
 
 Our project involves creating an interactive learning tool that allows a user to associate 
@@ -6,7 +8,7 @@ The project includes the creation of a 3D piano keyboard that can be played usin
 Another interactive element is the buttons at the top of the screen outlining a C4 major scale, 
 which can be pressed to hear the sound of the corresponding pitches. 
 
-#**TO RUN:**
+##**TO RUN:**
 
 ­ Open ‘pianoOne.html’. You can mouse-click each of the 7 buttons up top corresponding to notes of a scale 
 to hear the individual sound/pitches, so a user can learn how a pitch sounds and looks.
