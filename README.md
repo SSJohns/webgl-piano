@@ -13,11 +13,11 @@ to hear the individual sound/pitches, so a user can learn how a pitch sounds and
 
 ­ To animate the piano keys independently of the top buttons, press the keyboard keys
 
-[Keyboard controls] (http://oi66.tinypic.com/2qjlpqx.jpg)
+^      [Keyboard controls] (http://oi66.tinypic.com/2qjlpqx.jpg)
 
 The black notes in the images correspond to the # keys, such as C#3, etc and can be played/pressed 
 
-[Corresponding piano keys](http://oi65.tinypic.com/33m4bjn.jpg)
+^      [Corresponding piano keys](http://oi65.tinypic.com/33m4bjn.jpg)
 
 To adjust the camera view, use the arrow keys (up, down, left, right) and also use mouse­drag to move it as well. 
 
